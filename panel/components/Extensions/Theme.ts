@@ -102,6 +102,14 @@ function highlightStyle() {
         color: 'currentColor',
       },
       {
+        tag: kirbytextTags.emphasisMark,
+        color: 'currentColor',
+      },
+      {
+        tag: kirbytextTags.listMark,
+        color: 'currentColor',
+      },
+      {
         tag: [
           t.name,
           t.angleBracket,

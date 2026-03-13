@@ -9,9 +9,11 @@ import type { FormatDefinition } from '../../types/global';
 // Custom style tags
 
 export const tags = {
+  emphasisMark: Tag.define(),
   highlight: Tag.define(),
   kirbytag: Tag.define(),
   inlineCode: Tag.define(),
+  listMark: Tag.define(),
 };
 
 // Parser extension for recognizing Kirbytags
@@ -109,6 +111,22 @@ const InlineCode = {
   ],
 };
 
+const EmphasisMark = {
+  props: [
+    styleTags({
+      EmphasisMark: tags.emphasisMark,
+    }),
+  ],
+};
+
+const ListMark = {
+  props: [
+    styleTags({
+      ListMark: tags.listMark,
+    }),
+  ],
+};
+
 /* Export plugins */
 
 export default class MarkdownLanguage extends Extension {
@@ -123,7 +141,9 @@ export default class MarkdownLanguage extends Extension {
       extensions.push(Kirbytag(this.input?.knownKirbytags ?? []));
     }
 
-    [Highlight, InlineCode].forEach((extension) => extensions.push(extension));
+    [Highlight, InlineCode, EmphasisMark, ListMark].forEach((extension) =>
+      extensions.push(extension),
+    );
 
     return [
       markdown({
