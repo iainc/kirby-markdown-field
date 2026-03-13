@@ -114,14 +114,6 @@ export default class URLs extends Extension {
           e.stopPropagation();
           e.stopImmediatePropagation();
 
-          // we need to clone the link and programatically trigger
-          // a click, because the browser won’t recognize clicked
-          // links inside a contenteditable like codemirror
-          const $linkClone = $link.cloneNode() as HTMLAnchorElement;
-          document.body.appendChild($linkClone);
-          $linkClone.click();
-          $linkClone.remove();
-
           return false;
         },
       },
