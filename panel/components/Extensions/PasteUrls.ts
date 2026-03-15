@@ -6,7 +6,12 @@ import { isURL } from '../Utils/strings';
 export default class PasteUrls extends Extension {
   plugins(): CodeMirrorExtension[] {
     const editor = this.editor;
+    const pasteUrlsAsLinks = this.input?.pasteUrlsAsLinks !== false;
     const useKirbytext = !!this.input?.kirbytext;
+
+    if (pasteUrlsAsLinks !== true) {
+      return [];
+    }
 
     const pasteUrlsPlugin = ViewPlugin.define(() => ({}), {
       // eslint-disable-line no-unused-vars

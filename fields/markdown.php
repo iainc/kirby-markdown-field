@@ -82,6 +82,10 @@ return [
 		'kirbytext' => function (bool $kirbytext = true): bool {
 			return $kirbytext;
 		},
+
+		'pasteUrlsAsLinks' => function (?bool $pasteUrlsAsLinks = null): bool {
+			return $pasteUrlsAsLinks ?? $this->kirby()->option('fabianmichael.markdown-field.pasteUrlsAsLinks', true);
+		},
 	],
 	'computed' => [
 		/**

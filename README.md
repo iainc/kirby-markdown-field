@@ -84,6 +84,7 @@ editor:
 
 | Option | Type | Default | Description |
 | `fabianmichael.markdown-field.convertPermalinks` | `bool` | `false` | Replaces all permalinks in href/src attributes in Kirbytext with the regular URL, similar to what `https://getkirby.com/docs/reference/templates/field-methods/permalinks-to-urls` does but also works for absolute URLs. |
+| `fabianmichael.markdown-field.pasteUrlsAsLinks` | `bool` | `true` | Sets the default for whether pasting a URL over a selection wraps that selection in a link. |
 
 ### Field options
 
@@ -94,6 +95,7 @@ You have access to the very same options as [the textarea field](https://getkirb
 | font      | string | `false`  | `monospace` | Sets the font family (`sans-serif` or `monospace`) |
 | size      | String | `false`  | `small`     | Sets the empty height of the Markdown field        |
 | kirbytext | bool   | `false`  | `true`      | Use Kirbytext syntax for links, images etc.        |
+| pasteUrlsAsLinks | bool | `false` | `true` | Wrap a pasted URL around the current selection as a link |
 
 ### Font settings
 
@@ -218,7 +220,7 @@ buttons:
 
 #### URLs
 
-- When you select some text and paste a URL, it will automatically create a link tag and use the current selection as link text.
+- When `pasteUrlsAsLinks` is enabled and you select some text and paste a URL, it will automatically create a link tag and use the current selection as link text.
 
 ### Size
 

@@ -55,6 +55,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    pasteUrlsAsLinks: {
+      type: Boolean,
+      default: true,
+    },
     knownKirbytags: {
       type: Array,
       default: () => [],

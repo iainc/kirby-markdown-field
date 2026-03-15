@@ -31,6 +31,7 @@ export interface InputComponent {
   $t: (key: string) => string | null;
   $go: (url: string) => void;
   kirbytext?: boolean;
+  pasteUrlsAsLinks?: boolean;
   knownKirbytags?: string[];
   uploads?: boolean;
   upload?: () => void;
