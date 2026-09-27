@@ -21,6 +21,7 @@ import Invisibles from './Extensions/Invisibles.js';
 import KirbytextLanguage from './Extensions/KirbytextLanguage.js';
 import LineStyles from './Extensions/LineStyles.js';
 import PasteUrls from './Extensions/PasteUrls.js';
+import SectionMetadata from './Extensions/SectionMetadata.js';
 import TaskLists from './Extensions/TaskLists.js';
 import Theme from './Extensions/Theme.js';
 import type BlockFormats from './BlockFormats.js';
@@ -123,6 +124,7 @@ export default class Editor extends Emitter {
       [
         new KirbytextLanguage(),
         new LineStyles(),
+        new SectionMetadata(),
         new Invisibles(),
         new URLs(),
         new PasteUrls(),
