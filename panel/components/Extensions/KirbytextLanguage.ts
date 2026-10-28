@@ -1,10 +1,12 @@
 import { styleTags, Tag, tags as defaultTags } from '@lezer/highlight';
 import { markdown, markdownKeymap, markdownLanguage } from '@codemirror/lang-markdown';
 import Extension, { type ExtensionType } from '../Extension';
-import { LanguageSupport } from '@codemirror/language';
+import type { Extension as CodeMirrorExtension } from '@codemirror/state';
+import { toggleLineComment } from '@codemirror/commands';
 import type { KeyBinding } from '@codemirror/view';
 import type { InlineContext, MarkdownExtension } from '@lezer/markdown';
 import type { FormatDefinition } from '../../types/global';
+import { Comments } from './Comments';
 
 // Custom style tags
 
@@ -131,17 +133,17 @@ const ListMark = {
 
 export default class MarkdownLanguage extends Extension {
   keys(): KeyBinding[] {
-    return markdownKeymap.slice() as KeyBinding[];
+    return [...markdownKeymap, { key: 'Mod-/', run: toggleLineComment }];
   }
 
-  plugins(): LanguageSupport[] {
+  plugins(): CodeMirrorExtension[] {
     const extensions: MarkdownExtension[] = [];
 
     if (this.input?.kirbytext) {
       extensions.push(Kirbytag(this.input?.knownKirbytags ?? []));
     }
 
-    [Highlight, InlineCode, EmphasisMark, ListMark].forEach((extension) =>
+    [Comments, Highlight, InlineCode, EmphasisMark, ListMark].forEach((extension) =>
       extensions.push(extension),
     );
 
@@ -149,6 +151,9 @@ export default class MarkdownLanguage extends Extension {
       markdown({
         base: markdownLanguage,
         extensions,
+      }),
+      markdownLanguage.data.of({
+        commentTokens: { line: '//', block: { open: '<!--', close: '-->' } },
       }),
     ];
   }

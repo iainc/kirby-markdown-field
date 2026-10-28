@@ -44,6 +44,7 @@ Enhanced, extensible Markdown field for Kirby CMS. Now available in version ~~2~
       - [Inline Formats](#inline-formats)
       - [Other](#other)
       - [URLs](#urls)
+    - [Source comments](#source-comments)
     - [Size](#size)
   - [Extension API](#extension-api)
     - [Custom options for files, and uploads](#custom-options-for-files-and-uploads)
@@ -184,7 +185,7 @@ buttons:
 
 ### Keyboard Shortcuts
 
-ℹ️ Keyboard shortcuts are only available for those buttons/heading levels enabled in the toolbar.
+Toolbar formatting shortcuts are available for enabled buttons and heading levels. The comment shortcut is always available.
 
 #### Block Formats
 
@@ -216,11 +217,27 @@ buttons:
 | Format                      | Mac/iOS   | Linux/Windows |
 | :-------------------------- | :-------- | :------------ |
 | Show Whitespace             | `⌥⌃I`     | `Alt+Shift+i` |
+| Toggle line comment         | `⌘/`      | `Ctrl+/`     |
 | Open clicked URL in new tab | `⌘+Click` | `Ctrl+Click`  |
 
 #### URLs
 
 - When `pasteUrlsAsLinks` is enabled and you select some text and paste a URL, it will automatically create a link tag and use the current selection as link text.
+
+### Source comments
+
+Writer-style `//` line comments are highlighted as comments. Press `⌘/` on Mac
+or `Ctrl+/` on Linux and Windows to comment or uncomment the selected lines.
+
+```markdown
+// ## Draft section
+//
+// Content awaiting publication.
+```
+
+Each commented line needs its own marker. Up to three leading spaces are
+allowed, and markers inside code blocks or raw HTML stay literal. The site's
+Markdown renderer must support the same syntax to omit comments from its HTML.
 
 ### Size
 
