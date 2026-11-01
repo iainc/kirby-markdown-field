@@ -17,6 +17,7 @@ import URLs from './Extensions/URLs.js';
 import DropCursor from './Extensions/DropCursor.js';
 import FirefoxBlurFix from './Extensions/FirefoxBlurFix.js';
 import Extensions from './Extensions.js';
+import Alerts from './Extensions/Alerts.js';
 import Invisibles from './Extensions/Invisibles.js';
 import KirbytextLanguage from './Extensions/KirbytextLanguage.js';
 import LineStyles from './Extensions/LineStyles.js';
@@ -125,6 +126,7 @@ export default class Editor extends Emitter {
         new KirbytextLanguage(),
         new LineStyles(),
         new SectionMetadata(),
+        new Alerts(),
         new Invisibles(),
         new URLs(),
         new PasteUrls(),

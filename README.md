@@ -239,6 +239,18 @@ Each commented line needs its own marker. Up to three leading spaces are
 allowed, and markers inside code blocks or raw HTML stay literal. The site's
 Markdown renderer must support the same syntax to omit comments from its HTML.
 
+### Alerts
+
+The marker of a Writer-style alert gets the classes `cm-alert-marker` and
+`cm-alert-note`, `cm-alert-tip`, `cm-alert-important`, `cm-alert-warning`, or
+`cm-alert-caution`, so site themes can color it by kind. The site's Markdown
+renderer must support the same syntax to render the alert.
+
+```markdown
+> [!NOTE]
+> Useful information.
+```
+
 ### Size
 
 You can define the height of the field when empty. The default is `two-lines`, which mimics the textarea's default empty height.
