@@ -233,7 +233,6 @@ export default {
           italic: {},
           divider__0: {},
           link: {},
-          file: {},
           image: {},
           code: {},
           divider__1: {},
