@@ -251,6 +251,21 @@ renderer must support the same syntax to render the alert.
 > Useful information.
 ```
 
+### Content blocks and table metadata
+
+The URL of a Writer content block with an HTTPS image or video gets the class
+`cm-content-block-destination`. The metadata lines right below a content block
+or a table get `cm-block-metadata`, each key gets `cm-metadata-key`, and the
+`---` lines around delimited metadata also get `cm-metadata-delimiter`. Such a
+`---` block starts no section. The site's Markdown renderer must support the same syntax to render
+the content block and the table caption.
+
+```markdown
+https://example.com/clip.mp4 "Caption"
+poster: https://example.com/poster.webp
+attributes: controls loop
+```
+
 ### Size
 
 You can define the height of the field when empty. The default is `two-lines`, which mimics the textarea's default empty height.

@@ -20,12 +20,13 @@ function followsSeparator(
   doc: Text,
   lineNumber: number,
   inFencedCode: (number: number) => boolean,
+  belongsToBlock: (number: number) => boolean,
 ): boolean {
   for (let previous = lineNumber - 1; previous >= 1; previous--) {
     const text = doc.line(previous).text;
 
     if (!metadataLine.test(text)) {
-      return separator.test(text) && !inFencedCode(previous);
+      return separator.test(text) && !inFencedCode(previous) && !belongsToBlock(previous);
     }
   }
 
@@ -37,14 +38,16 @@ export function sectionMetadataLineNumbers(
   firstLine: number,
   finalLine: number,
   inFencedCode: (number: number) => boolean = () => false,
+  // A `---` that opens the metadata of a table or content block starts no section.
+  belongsToBlock: (number: number) => boolean = () => false,
 ): number[] {
   const result: number[] = [];
-  let inMetadata = followsSeparator(doc, firstLine, inFencedCode);
+  let inMetadata = followsSeparator(doc, firstLine, inFencedCode, belongsToBlock);
 
   for (let number = firstLine; number <= finalLine; number++) {
     const text = doc.line(number).text;
 
-    if (separator.test(text) && !inFencedCode(number)) {
+    if (separator.test(text) && !inFencedCode(number) && !belongsToBlock(number)) {
       inMetadata = true;
     } else if (inMetadata && metadataLine.test(text)) {
       result.push(number);

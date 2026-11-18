@@ -7,6 +7,7 @@ import {
   type ViewUpdate,
 } from '@codemirror/view';
 import Extension from '../Extension';
+import { opensBlockMetadata } from '../Utils/block-metadata';
 import { isFencedCodeLine, sectionMetadataLineNumbers } from '../Utils/section-metadata';
 import type { Extension as CodeMirrorExtension } from '@codemirror/state';
 
@@ -20,7 +21,7 @@ function metadataDecorations(view: EditorView): DecorationSet {
     const firstLine = Math.max(doc.lineAt(from).number, lastLine + 1);
     const finalLine = doc.lineAt(to).number;
 
-    for (const number of sectionMetadataLineNumbers(doc, firstLine, finalLine, inFencedCode)) {
+    for (const number of sectionMetadataLineNumbers(doc, firstLine, finalLine, inFencedCode, (line) => opensBlockMetadata(doc, line))) {
       const line = doc.line(number);
       builder.add(
         line.from,
