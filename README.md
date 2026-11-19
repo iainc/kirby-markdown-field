@@ -256,8 +256,8 @@ renderer must support the same syntax to render the alert.
 The URL of a Writer content block with an HTTPS image or video gets the class
 `cm-content-block-destination`. The metadata lines right below a content block
 or a table get `cm-block-metadata`, each key gets `cm-metadata-key`, and the
-`---` lines around delimited metadata also get `cm-metadata-delimiter`. Such a
-`---` block starts no section. The site's Markdown renderer must support the same syntax to render
+`---` lines around delimited metadata also get `cm-metadata-delimiter`, in quotes
+too. Such a `---` block starts no section. The site's Markdown renderer must support the same syntax to render
 the content block and the table caption.
 
 ```markdown

@@ -52,14 +52,22 @@ function isBlank(text: string): boolean {
   return text.trim() === '';
 }
 
+// A line's text inside its quotes, since content blocks and their metadata work in quotes too,
+// and where that text starts.
+function content(doc: Text, number: number): { text: string; offset: number } {
+  const line = doc.line(number).text;
+  const offset = /^(?:[ ]{0,3}>[ ]?)*/.exec(line)?.[0].length ?? 0;
+  return { text: line.slice(offset), offset };
+}
+
 // The line of the closing `---` when the line opens delimited metadata, or null.
 function closingDelimiter(doc: Text, number: number): number | null {
-  if (!separator.test(doc.line(number).text) || number >= doc.lines || key(doc.line(number + 1).text) === null) {
+  if (!separator.test(content(doc, number).text) || number >= doc.lines || key(content(doc, number + 1).text) === null) {
     return null;
   }
 
   for (let next = number + 2; next <= doc.lines; next++) {
-    const text = doc.line(next).text;
+    const { text } = content(doc, next);
     if (isBlank(text)) {
       return null;
     }
@@ -72,8 +80,8 @@ function closingDelimiter(doc: Text, number: number): number | null {
 }
 
 function endsTable(doc: Text, number: number): boolean {
-  for (let row = number; row >= 2 && doc.line(row).text.includes('|'); row--) {
-    if (tableDelimiter.test(doc.line(row).text) && doc.line(row - 1).text.includes('|')) {
+  for (let row = number; row >= 2 && content(doc, row).text.includes('|'); row--) {
+    if (tableDelimiter.test(content(doc, row).text) && content(doc, row - 1).text.includes('|')) {
       return true;
     }
   }
@@ -86,7 +94,7 @@ export function opensBlockMetadata(doc: Text, number: number): boolean {
     return false;
   }
 
-  const previous = doc.line(number - 1).text;
+  const previous = content(doc, number - 1).text;
   return (destination(previous) !== null || endsTable(doc, number - 1)) && closingDelimiter(doc, number) !== null;
 }
 
@@ -98,7 +106,7 @@ export function blockMetadata(
 ): BlockMetadata {
   const result: BlockMetadata = { destinations: [], keys: [], delimiters: [] };
   let start = firstLine;
-  while (start > 1 && !isBlank(doc.line(start - 1).text)) {
+  while (start > 1 && !isBlank(content(doc, start - 1).text)) {
     start--;
   }
 
@@ -106,7 +114,7 @@ export function blockMetadata(
   let table = false;
   let metadata = false;
   for (let number = start; number <= finalLine; number++) {
-    const text = doc.line(number).text;
+    const { text, offset } = content(doc, number);
     const visible = number >= firstLine;
 
     if (isBlank(text) || inFencedCode(number)) {
@@ -118,7 +126,7 @@ export function blockMetadata(
     // A line that forms a table row takes precedence over metadata.
     if (keyLength !== null && (metadata || (owner && !(table && text.includes('|'))))) {
       if (visible) {
-        result.keys.push({ line: number, from: 0, to: keyLength });
+        result.keys.push({ line: number, from: offset, to: offset + keyLength });
       }
       owner = table = false;
       metadata = true;
@@ -135,12 +143,13 @@ export function blockMetadata(
       const closing = closingDelimiter(doc, number);
       if (closing !== null) {
         for (let line = number; line <= closing; line++) {
-          const lineKey = key(doc.line(line).text);
+          const inner = content(doc, line);
+          const lineKey = key(inner.text);
           if (line >= firstLine && line <= finalLine) {
             if (line === number || line === closing) {
               result.delimiters.push(line);
             } else if (lineKey !== null) {
-              result.keys.push({ line, from: 0, to: lineKey });
+              result.keys.push({ line, from: inner.offset, to: inner.offset + lineKey });
             }
           }
         }
@@ -154,10 +163,10 @@ export function blockMetadata(
     const range = destination(text);
     if (range) {
       if (visible) {
-        result.destinations.push({ line: number, ...range });
+        result.destinations.push({ line: number, from: offset + range.from, to: offset + range.to });
       }
       owner = true;
-    } else if (text.includes('|') && number < doc.lines && tableDelimiter.test(doc.line(number + 1).text)) {
+    } else if (text.includes('|') && number < doc.lines && tableDelimiter.test(content(doc, number + 1).text)) {
       number++;
       owner = table = true;
     }

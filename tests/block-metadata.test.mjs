@@ -80,3 +80,12 @@ test('skips fenced code', () => {
   const found = blockMetadata(Text.of(lines), 1, lines.length, (line) => line >= 1 && line <= 4);
   assert.deepEqual(found, { destinations: [], keys: [], delimiters: [] });
 });
+
+test('marks content blocks and metadata inside quotes', () => {
+  const found = scan(['> https://static.ia.net/logo.png', '> imgclass: avatar', '>', '> A great app.']);
+  assert.deepEqual(found, {
+    destinations: [{ line: 1, from: 2, to: 32 }],
+    keys: [{ line: 2, from: 2, to: 11 }],
+    delimiters: [],
+  });
+});
