@@ -263,7 +263,7 @@ the content block and the table caption.
 ```markdown
 https://example.com/clip.mp4 "Caption"
 poster: https://example.com/poster.webp
-attributes: controls loop
+video: controls loop
 ```
 
 ### Size
